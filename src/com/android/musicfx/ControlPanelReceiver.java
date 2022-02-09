@@ -74,7 +74,11 @@ public class ControlPanelReceiver extends BroadcastReceiver {
 
         // close audio session
         if (action.equals(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION)) {
-
+            //Bug 1428656, MuiscFX's activty still exists when Music app quits.
+            if (ActivityMusic.mInstance != null) {
+                ActivityMusic.mInstance.finish();
+                ActivityMusic.mInstance = null;
+            }
             ControlPanelEffect.closeSession(context, packageName, audioSession);
         }
 
